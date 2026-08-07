@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO · Tableau de bord</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #eef2f7;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: white;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(26, 84, 148, 0.06);
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0a2647;
+        }
+
+        .topbar-brand i {
+            background: #1a5494;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 30px;
+            font-size: 1.2rem;
+        }
+
+        .topbar-brand span {
+            color: #1a5494;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .topbar-right .date-badge {
+            background: #f0f4fa;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a3a5a;
+        }
+
+        .topbar-right .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #1a5494;
+            color: white;
+            padding: 0.4rem 1.2rem 0.4rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .topbar-right .user-badge i {
+            background: white;
+            color: #1a5494;
+            padding: 0.3rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(26, 84, 148, 0.06);
+            transition: 0.15s;
+        }
+
+        .stat-card:hover {
+            border-color: #1a5494;
+            box-shadow: 0 8px 20px rgba(26, 84, 148, 0.06);
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #6d8aa8;
+            letter-spacing: 0.4px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0a2647;
+            margin-top: 0.2rem;
+        }
+
+        .stat-card .sub {
+            font-size: 0.8rem;
+            color: #4a7aa7;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 1.8rem;
+        }
+
+        @media (max-width: 920px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== SECTION FACTURES ===== */
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 1.6rem 1.8rem 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(26, 84, 148, 0.06);
+            margin-bottom: 1.8rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0a2647;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-header h2 i {
+            color: #1a5494;
+        }
+
+        .btn {
+            background: #1a5494;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:hover {
+            background: #0f427a;
+            transform: scale(1.02);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a5494;
+            border: 1.5px solid #1a5494;
+        }
+
+        .btn-outline:hover {
+            background: #1a5494;
+            color: white;
+        }
+
+        .btn-success {
+            background: #1f8b4c;
+        }
+
+        .btn-success:hover {
+            background: #15733e;
+        }
+
+        /* ===== TABLEAU DES FACTURES ===== */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.7rem 0.5rem 0.7rem 0;
+            font-weight: 600;
+            color: #4a7aa7;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            border-bottom: 1.5px solid #e8edf4;
+        }
+
+        td {
+            padding: 0.9rem 0.5rem 0.9rem 0;
+            border-bottom: 1px solid #edf2f8;
+            color: #1a3a5a;
+        }
+
+        td:last-child, th:last-child {
+            text-align: right;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-paid {
+            background: #dff0e6;
+            color: #1f8b4c;
+        }
+
+        .status-pending {
+            background: #fff3d6;
+            color: #b2700a;
+        }
+
+        .status-overdue {
+            background: #fde8e8;
+            color: #b13a3a;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #4a7aa7;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            transition: 0.1s;
+        }
+
+        .action-btn:hover {
+            background: #e8edf4;
+            color: #1a5494;
+        }
+
+        .action-btn.danger:hover {
+            background: #fde8e8;
+            color: #b13a3a;
+        }
+
+        /* ===== PANEL LATÉRAL : GÉNÉRER FACTURE ===== */
+        .panel-generate {
+            background: white;
+            border-radius: 32px;
+            padding: 1.8rem;
+            border: 1px solid rgba(26, 84, 148, 0.06);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .panel-generate h3 {
+            font-size: 1.1rem;
+            color: #0a2647;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-generate h3 i {
+            color: #1a5494;
+        }
+
+        .panel-generate .subtitle {
+            font-size: 0.8rem;
+            color: #6d8aa8;
+            margin-bottom: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #4a7aa7;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 30px;
+            border: 1.5px solid #dce5ef;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.15s;
+            background: white;
+            color: #0a2647;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1a5494;
+            box-shadow: 0 0 0 4px rgba(26, 84, 148, 0.08);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .btn-generate {
+            width: 100%;
+            margin-top: 0.6rem;
+            padding: 0.9rem;
+            font-size: 1rem;
+            justify-content: center;
+            background: #1a5494;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-generate:hover {
+            background: #0f427a;
+            transform: scale(1.02);
+        }
+
+        .btn-generate i {
+            font-size: 1.1rem;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a2647;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            border-left: 6px solid #1f8b4c;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 1.4rem;
+            color: #5fdb8a;
+        }
+
+        .toast .close-toast {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        /* responsive */
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 0.6rem 1.2rem;
+                border-radius: 28px;
+            }
+            .topbar-brand {
+                font-size: 1.2rem;
+            }
+            .topbar-right .date-badge {
+                display: none;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .panel-generate {
+                padding: 1.2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="topbar">
+        <div class="topbar-brand">
+            <i class="fas fa-car-side"></i> MOUNOUO<span>.</span> <span style="font-weight: 400; font-size: 0.8rem; color: #4a7aa7;">location</span>
+        </div>
+        <div class="topbar-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aujourd'hui · 5 août 2026</span>
+            <div class="user-badge">
+                <i class="fas fa-user"></i> Gestionnaire
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== STATS ===== -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="label"><i class="fas fa-file-invoice"></i> Factures totales</div>
+            <div class="value" id="totalInvoices">0</div>
+            <div class="sub">dont 0 payées</div>
+        </div>
+        <div class="stat-card">
+            <div class="label"><i class="fas fa-coins"></i> Chiffre d'affaires</div>
+            <div class="value" id="totalRevenue">0 €</div>
+            <div class="sub">encaissé</div>
+        </div>
+        <div class="stat-card">
+            <div class="label"><i class="fas fa-clock"></i> En attente</div>
+            <div class="value" id="pendingCount">0</div>
+            <div class="sub">factures à régler</div>
+        </div>
+        <div class="stat-card">
+            <div class="label"><i class="fas fa-car"></i> Locations actives</div>
+            <div class="value">8</div>
+            <div class="sub">4 véhicules disponibles</div>
+        </div>
+    </section>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="dashboard-grid">
+
+        <!-- ===== LISTE DES FACTURES ===== -->
+        <section class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-file-invoice"></i> Factures émises</h2>
+                <button class="btn btn-success" id="refreshInvoices"><i class="fas fa-sync-alt"></i> Actualiser</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N° facture</th>
+                            <th>Client</th>
+                            <th>Véhicule</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody">
+                        <!-- Les factures sont injectées ici -->
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 1.2rem; font-size: 0.8rem; color: #6d8aa8; text-align: right;">
+                <i class="fas fa-info-circle"></i> Cliquez sur <i class="fas fa-eye" style="margin:0 2px;"></i> pour prévisualiser
+            </div>
+        </section>
+
+        <!-- ===== PANEL GÉNÉRER FACTURE ===== -->
+        <aside class="panel-generate" id="generatePanel">
+            <h3><i class="fas fa-plus-circle"></i> Générer une facture</h3>
+            <div class="subtitle">Remplissez les champs pour créer une nouvelle facture</div>
+
+            <form id="invoiceForm">
+                <div class="form-group">
+                    <label for="clientName">Client</label>
+                    <input type="text" id="clientName" placeholder="Nom du client" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicle">Véhicule</label>
+                    <select id="vehicle" required>
+                        <option value="">Sélectionner</option>
+                        <option value="Peugeot 208">Peugeot 208</option>
+                        <option value="Renault Clio">Renault Clio</option>
+                        <option value="Citroën C3">Citroën C3</option>
+                        <option value="Dacia Sandero">Dacia Sandero</option>
+                        <option value="Toyota Yaris">Toyota Yaris</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Montant (€)</label>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Statut</label>
+                        <select id="status">
+                            <option value="payée">Payée</option>
+                            <option value="en attente" selected>En attente</option>
+                            <option value="en retard">En retard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-generate" id="generateBtn">
+                    <i class="fas fa-file-invoice"></i> Générer la facture
+                </button>
+            </form>
+
+            <div style="margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #e8edf4; font-size: 0.75rem; color: #6d8aa8; text-align: center;">
+                <i class="fas fa-shield-alt" style="color: #1a5494;"></i> Facture numérotée automatiquement
+            </div>
+        </aside>
+    </div>
+
+    <!-- ===== TOAST NOTIFICATION ===== -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Facture générée avec succès !</span>
+        <button class="close-toast" id="closeToast"><i class="fas fa-times"></i></button>
+    </div>
+
+    <script>
+        (function() {
+            // ===== DONNÉES INITIALES =====
+            let invoices = [
+                { id: 'FAC-2026-001', client: 'Sophie Martin', vehicle: 'Peugeot 208', amount: 245.50, status: 'payée' },
+                { id: 'FAC-2026-002', client: 'Lucas Bernard', vehicle: 'Renault Clio', amount: 180.00, status: 'en attente' },
+                { id: 'FAC-2026-003', client: 'Élise Dupont', vehicle: 'Citroën C3', amount: 320.75, status: 'en retard' },
+                { id: 'FAC-2026-004', client: 'Thomas Lefevre', vehicle: 'Dacia Sandero', amount: 210.20, status: 'payée' },
+            ];
+
+            let invoiceCounter = 5; // pour les prochains numéros
+
+            // ===== RÉFÉRENCES DOM =====
+            const tbody = document.getElementById('invoiceTableBody');
+            const totalInvoicesEl = document.getElementById('totalInvoices');
+            const totalRevenueEl = document.getElementById('totalRevenue');
+            const pendingCountEl = document.getElementById('pendingCount');
+
+            const form = document.getElementById('invoiceForm');
+            const clientNameInput = document.getElementById('clientName');
+            const vehicleSelect = document.getElementById('vehicle');
+            const amountInput = document.getElementById('amount');
+            const statusSelect = document.getElementById('status');
+
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const closeToastBtn = document.getElementById('closeToast');
+
+            // ===== RENDER TABLE + STATS =====
+            function render() {
+                // Tri par date fictive (on garde l'ordre d'insertion)
+                let html = '';
+                if (invoices.length === 0) {
+                    html = `<tr><td colspan="6" style="text-align:center; padding: 2rem 0; color: #6d8aa8;">Aucune facture pour le moment</td></tr>`;
+                } else {
+                    invoices.forEach((inv, index) => {
+                        const statusClass = inv.status === 'payée' ? 'status-paid' :
+                                            inv.status === 'en attente' ? 'status-pending' : 'status-overdue';
+                        html += `
+                            <tr>
+                                <td><strong>${inv.id}</strong></td>
+                                <td>${inv.client}</td>
+                                <td>${inv.vehicle}</td>
+                                <td>${inv.amount.toFixed(2)} €</td>
+                                <td><span class="status-badge ${statusClass}">${inv.status}</span></td>
+                                <td>
+                                    <button class="action-btn" onclick="previewInvoice('${inv.id}')" title="Prévisualiser"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn danger" onclick="deleteInvoice('${inv.id}')" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                tbody.innerHTML = html;
+
+                // Stats
+                const total = invoices.length;
+                const totalPaid = invoices.filter(i => i.status === 'payée').length;
+                const totalRevenue = invoices.reduce((sum, i) => sum + (i.status === 'payée' ? i.amount : 0), 0);
+                const pending = invoices.filter(i => i.status === 'en attente' || i.status === 'en retard').length;
+
+                totalInvoicesEl.textContent = total;
+                totalRevenueEl.textContent = totalRevenue.toFixed(2) + ' €';
+                pendingCountEl.textContent = pending;
+            }
+
+            // ===== AJOUTER FACTURE =====
+            function addInvoice(client, vehicle, amount, status) {
+                const id = `FAC-2026-${String(invoiceCounter++).padStart(3, '0')}`;
+                const newInvoice = {
+                    id,
+                    client,
+                    vehicle,
+                    amount: parseFloat(amount),
+                    status: status.toLowerCase()
+                };
+                invoices.unshift(newInvoice); // ajout en tête
+                render();
+                showToast(`Facture ${id} générée pour ${client}`);
+            }
+
+            // ===== SUPPRIMER FACTURE =====
+            window.deleteInvoice = function(id) {
+                if (confirm(`Supprimer la facture ${id} ?`)) {
+                    invoices = invoices.filter(inv => inv.id !== id);
+                    render();
+                    showToast(`Facture ${id} supprimée`);
+                }
+            };
+
+            // ===== PRÉVISUALISER (simulation) =====
+            window.previewInvoice = function(id) {
+                const inv = invoices.find(i => i.id === id);
+                if (inv) {
+                    alert(
+                        `🧾 FACTURE ${inv.id}\n` +
+                        `Client : ${inv.client}\n` +
+                        `Véhicule : ${inv.vehicle}\n` +
+                        `Montant : ${inv.amount.toFixed(2)} €\n` +
+                        `Statut : ${inv.status}\n\n` +
+                        `📄 MOUNOUO · Agence de location`
+                    );
+                } else {
+                    alert('Facture introuvable.');
+                }
+            };
+
+            // ===== TOAST =====
+            let toastTimeout;
+
+            function showToast(message) {
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3500);
+            }
+
+            closeToastBtn.addEventListener('click', () => {
+                toast.classList.remove('show');
+                clearTimeout(toastTimeout);
+            });
+
+            // ===== SOUMISSION FORMULAIRE =====
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const client = clientNameInput.value.trim();
+                const vehicle = vehicleSelect.value;
+                const amount = amountInput.value.trim();
+                const status = statusSelect.value;
+
+                if (!client || !vehicle || !amount || parseFloat(amount) <= 0) {
+                    alert('Veuillez remplir tous les champs correctement.');
+                    return;
+                }
+
+                addInvoice(client, vehicle, parseFloat(amount), status);
+
+                // Réinitialiser (sauf le statut)
+                clientNameInput.value = '';
+                vehicleSelect.value = '';
+                amountInput.value = '';
+                statusSelect.value = 'en attente';
+                clientNameInput.focus();
+            });
+
+            // ===== BOUTON RAFRAÎCHIR =====
+            document.getElementById('refreshInvoices').addEventListener('click', function() {
+                render();
+                showToast('Liste actualisée');
+            });
+
+            // ===== INIT =====
+            render();
+            // Afficher un toast de bienvenue
+            setTimeout(() => {
+                showToast('Bienvenue dans votre tableau de bord MOUNOUO');
+            }, 400);
+        })();
+    </script>
+</body>
+</html>

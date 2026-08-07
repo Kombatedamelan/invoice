@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO - Connexion</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Icônes FontAwesome -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Police Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Réinitialisation générale */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0a0f24; /* Fond bleu nuit très sombre */
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Positionnement global pour les effets de lumière */
+.login-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Cercles lumineux en arrière-plan (Effet de profondeur) */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 1;
+}
+
+.circle-1 {
+    width: 250px;
+    height: 250px;
+    background: #0072ff;
+    top: -50px;
+    left: -50px;
+    opacity: 0.6;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    background: #00f2fe;
+    bottom: -40px;
+    right: -40px;
+    opacity: 0.4;
+}
+
+/* La boîte de connexion principale */
+.login-box {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+}
+
+/* En-tête */
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.login-header h1 {
+    font-size: 2.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-header p {
+    color: #a0aec0;
+    font-size: 0.9rem;
+}
+
+/* Groupes de saisie */
+.input-group {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-group label i {
+    margin-right: 6px;
+    color: #00f2fe;
+}
+
+/* Champs de texte */
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input::placeholder {
+    color: #718096;
+}
+
+/* Focus sur l'input */
+.input-group input:focus {
+    border-color: #00f2fe;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+}
+
+/* Options (Se souvenir de moi / Mot de passe oublié) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+    color: #a0aec0;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.remember-me input {
+    accent-color: #00f2fe;
+}
+
+.forgot-pass {
+    color: #00f2fe;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-pass:hover {
+    color: #4facfe;
+    text-decoration: underline;
+}
+
+/* Bouton de soumission */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #0072ff, #00f2fe);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 114, 255, 0.5);
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
+}
+
+/* Bas de page */
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #a0aec0;
+}
+
+.login-footer a {
+    color: #00f2fe;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+/* Bloc des erreurs */
+.alert-errors{
+    background: rgba(255, 77, 77, 0.12);
+    border: 1px solid rgba(255, 77, 77, 0.4);
+    color: #ffb3b3;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.alert-errors ul{
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alert-errors li{
+    margin-bottom: 5px;
+}
+
+/* Erreur sous un champ */
+.error{
+    color: #ff6b6b;
+    font-size: 0.82rem;
+    margin-top: 6px;
+    display: block;
+}
+
+/* Champ invalide */
+.input-group input.is-invalid{
+    border: 1px solid #ff4d4d;
+    box-shadow: 0 0 10px rgba(255,77,77,.3);
+}
+
+/* Adaptation Mobile */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 30px 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- Effets de lumière en arrière-plan -->
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+
+        <div class="login-box">
+            <div class="login-header">
+                <h1>MOUNOUO</h1>
+                <p>Ravi de vous revoir ! Connectez-vous.</p>
+            </div>
+
+            <form action="{{ route('login.authenticate') }}" method="POST">
+                @csrf
+                <!-- Champ Email -->
+               <div class="input-group">
+                    <label for="email">
+                        <i class="fa-solid fa-envelope"></i> Adresse Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        placeholder="exemple@mail.com"
+                        class="@error('email') is-invalid @enderror"
+                        required
+                    >
+
+                    @error('email')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Champ Mot de passe -->
+               <div class="input-group">
+                    <label for="password">
+                        <i class="fa-solid fa-lock"></i> Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="••••••••"
+                        class="@error('password') is-invalid @enderror"
+                        required
+                    >
+
+                    @error('password')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Options supplémentaires -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Se souvenir de moi
+                    </label>
+                    <a href="#" class="forgot-pass">Mot de passe oublié ?</a>
+                </div>
+
+                <!-- Bouton Connexion -->
+                <button type="submit" class="submit-btn">
+                    <span>Se connecter</span>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+
+            <!-- Lien d'inscription -->
+            <!-- <div class="login-footer">
+                <p>Pas encore de compte ? <a href="#">Créer un compte</a></p>
+            </div> -->
+        </div>
+    </div>
+
+</body>
+</html>

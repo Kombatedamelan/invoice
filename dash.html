@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO - Facturation</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Réinitialisation complète */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #0a0f24; /* Fond bleu nuit */
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Structure en grille */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* BARRE LATÉRALE (SIDEBAR) */
+.sidebar {
+    width: 260px;
+    background: rgba(255, 255, 255, 0.03);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+}
+
+.brand h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #a0aec0;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.menu-item i {
+    font-size: 1.1rem;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: #fff;
+    background: rgba(0, 242, 254, 0.1);
+    box-shadow: inset 3px 0 0 #00f2fe;
+}
+
+.logout-btn {
+    color: #ff4e50;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 78, 80, 0.1);
+    border-radius: 10px;
+}
+
+/* ZONE DE CONTENU PRINCIPAL */
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    max-width: calc(100% - 260px);
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.welcome-text h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.welcome-text p {
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    background: #0072ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CARTES STATISTIQUES */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.icon-blue { background: rgba(0, 114, 255, 0.15); color: #0072ff; }
+.icon-green { background: rgba(46, 213, 115, 0.15); color: #2ed573; }
+.icon-orange { background: rgba(255, 165, 0, 0.15); color: #ffa500; }
+
+.stat-info h3 {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.stat-number {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* DISPOSITION GRILLE PRINCIPALE */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* BLOCS DE SECTIONS (CARDS) */
+.invoice-form-section, .invoice-list-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 25px;
+    backdrop-filter: blur(5px);
+}
+
+.card-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
+}
+
+.card-header h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header h2 i { color: #00f2fe; }
+
+/* LE FORMULAIRE DE CRÉATION */
+.invoice-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    color: #a0aec0;
+}
+
+.invoice-form input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 10px;
+    color: #fff;
+    outline: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.invoice-form input:focus {
+    border-color: #00f2fe;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group { flex: 1; }
+
+.btn-generate {
+    background: linear-gradient(45deg, #0072ff, #00f2fe);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-generate:hover {
+    box-shadow: 0 5px 20px rgba(0, 242, 254, 0.4);
+    transform: translateY(-2px);
+}
+
+/* LE TABLEAU DES FACTURES */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.invoice-table th, .invoice-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.invoice-table th {
+    color: #a0aec0;
+    font-weight: 500;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-paid { background: rgba(46, 213, 115, 0.15); color: #2ed573; }
+.status-pending { background: rgba(255, 165, 0, 0.15); color: #ffa500; }
+
+.btn-action {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #00f2fe;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-action:hover {
+    background: #00f2fe;
+    color: #0a0f24;
+}
+
+/* RESPONSIVE MOBILE ACCENTUÉ */
+@media (max-width: 768px) {
+    .dashboard-container { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .main-content { max-width: 100%; padding: 20px; }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- BARRE LATÉRALE (SIDEBAR) -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>MOUNOUO</h2>
+            </div>
+            <nav class="menu">
+                <a href="#" class="menu-item active"><i class="fa-solid fa-file-invoice-dollar"></i> Factures</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-users"></i> Clients</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Rapports</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Paramètres</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+            </div>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- EN-TÊTE -->
+            <header class="main-header">
+                <div class="welcome-text">
+                    <h1>Gestion des Factures</h1>
+                    <p>Créez et suivez vos facturations de location de voiture.</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar"><i class="fa-solid fa-user"></i></span>
+                    <span class="user-name">Admin</span>
+                </div>
+            </header>
+
+            <!-- STATISTIQUES RAPIDES -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><i class="fa-solid fa-dollar-sign"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Facturé</h3>
+                        <p class="stat-number">14 500 €</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green"><i class="fa-solid fa-file-circle-check"></i></div>
+                    <div class="stat-info">
+                        <h3>Payées</h3>
+                        <p class="stat-number">28</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>En Attente</h3>
+                        <p class="stat-number">5</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ZONE ACTION ET TABLEAU -->
+            <div class="dashboard-grid">
+                
+                <!-- FORMULAIRE DE GÉNÉRATION DE FACTURE -->
+                <section class="invoice-form-section">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-plus"></i> Nouvelle Facture</h2>
+                    </div>
+                    <form class="invoice-form" action="#" method="POST">
+                        <div class="form-group">
+                            <label for="client-name">Nom du Client</label>
+                            <input type="text" id="client-name" placeholder="Ex: Jean Dupont" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="car-model">Véhicule Loué</label>
+                            <input type="text" id="car-model" placeholder="Ex: Toyota RAV4" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="days">Jours</label>
+                                <input type="number" id="days" min="1" placeholder="3" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Montant Total (€)</label>
+                                <input type="number" id="amount" min="1" placeholder="150" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-generate">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Générer la Facture
+                        </button>
+                    </form>
+                </section>
+
+                <!-- LISTE DES DERNIÈRES FACTURES -->
+                <section class="invoice-list-section">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-list"></i> Factures Récentes</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Véhicule</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#INV-0042</td>
+                                    <td>Alice Lawson</td>
+                                    <td>Hyundai Tucson</td>
+                                    <td>240 €</td>
+                                    <td><span class="status status-paid">Payée</span></td>
+                                    <td><button class="btn-action"><i class="fa-solid fa-download"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-0041</td>
+                                    <td>Koffi Mensah</td>
+                                    <td>Suzuki Swift</td>
+                                    <td>120 €</td>
+                                    <td><span class="status status-pending">En attente</span></td>
+                                    <td><button class="btn-action"><i class="fa-solid fa-download"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-0040</td>
+                                    <td>Marc Blan</td>
+                                    <td>Mercedes C-Class</td>
+                                    <td>650 €</td>
+                                    <td><span class="status status-paid">Payée</span></td>
+                                    <td><button class="btn-action"><i class="fa-solid fa-download"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

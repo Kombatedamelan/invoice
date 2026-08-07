@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO - Facturation</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Réinitialisation complète */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #0a0f24; /* Fond bleu nuit */
+    color: #fff;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* BARRE SUPÉRIEURE (TOP-BAR) - 100% de la largeur */
+.top-bar {
+    width: 100%;
+    height: 75px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+.top-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a0aec0;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: #fff;
+    background: rgba(0, 242, 254, 0.1);
+}
+
+.top-profile {
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn {
+    color: #ff4e50;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 78, 80, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ZONE DE CONTENU PRINCIPAL - 100% de la largeur */
+.main-content {
+    width: 100%;
+    padding: 40px;
+}
+
+/* EN-TÊTE DU CONTENU */
+.content-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.welcome-text h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.welcome-text p {
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+/* BOUTON CRÉER UNE FACTURE */
+.btn-create-invoice {
+    background: linear-gradient(45deg, #0072ff, #00f2fe);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-create-invoice:hover {
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+    transform: translateY(-2px);
+}
+
+/* CARTES STATISTIQUES - Distribuées sur 100% de la largeur */
+.stats-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.icon-blue { background: rgba(0, 114, 255, 0.15); color: #0072ff; }
+.icon-green { background: rgba(46, 213, 115, 0.15); color: #2ed573; }
+.icon-orange { background: rgba(255, 165, 0, 0.15); color: #ffa500; }
+
+.stat-info h3 {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* SECTION TABLEAU - Prends 100% de la largeur */
+.invoice-list-section {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+}
+
+.card-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 15px;
+}
+
+.card-header h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header h2 i { color: #00f2fe; }
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.invoice-table th, .invoice-table td {
+    padding: 18px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.invoice-table th {
+    color: #a0aec0;
+    font-weight: 500;
+}
+
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-paid { background: rgba(46, 213, 115, 0.12); color: #2ed573; }
+.status-pending { background: rgba(255, 165, 0, 0.12); color: #ffa500; }
+
+.btn-action {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #00f2fe;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-action:hover {
+    background: #00f2fe;
+    color: #0a0f24;
+}
+
+/* RESPONSIVE MOBILE ACCESSIBLE */
+@media (max-width: 850px) {
+    .top-bar { padding: 0 20px; flex-direction: column; height: auto; padding-bottom: 15px; gap: 10px; }
+    .top-menu { gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .content-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .btn-create-invoice { width: 100%; justify-content: center; }
+    .stats-grid { grid-template-columns: 1fr; }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- BARRE SUPÉRIEURE (TOP-BAR) SUR TOUTE LA LARGEUR -->
+    <header class="top-bar">
+        <div class="brand">
+            <h2>MOUNOUO</h2>
+        </div>
+        <nav class="top-menu">
+            <a href="#" class="menu-item active"><i class="fa-solid fa-file-invoice-dollar"></i> Factures</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-plus-circle"></i> Nouvelle facture</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Paramètres</a>
+        </nav>
+        <div class="top-profile">
+            <a href="index.html" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Déconnexion</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL À 100% DE LARGEUR -->
+    <main class="main-content">
+        
+        <!-- EN-TÊTE DU CONTENU -->
+        <section class="content-header">
+            <div class="welcome-text">
+                <h1>Gestion des Factures</h1>
+                <p>Suivez et éditez vos facturations de location de voiture.</p>
+            </div>
+            <!-- BOUTON CRÉER ACCESSIBLE -->
+            <button class="btn-create-invoice">
+                <i class="fa-solid fa-plus"></i> Créer une nouvelle facture
+            </button>
+        </section>
+
+        <!-- STATISTIQUES RAPIDES SUR TOUTE LA LARGEUR -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon icon-blue"><i class="fa-solid fa-wallet"></i></div>
+                <div class="stat-info">
+                    <h3>Total Facturé</h3>
+                    <p class="stat-number">9 500 000 FCFA</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-green"><i class="fa-solid fa-file-circle-check"></i></div>
+                <div class="stat-info">
+                    <h3>Payées</h3>
+                    <p class="stat-number">28</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-orange"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3>En Attente</h3>
+                    <p class="stat-number">5</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LISTE DES FACTURES LARGEUR MAXIMALE -->
+        <section class="invoice-list-section">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-list"></i> Liste des Factures Récentes</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Client</th>
+                            <th>Véhicule</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#INV-0042</td>
+                            <td>Alice Lawson</td>
+                            <td>Hyundai Tucson</td>
+                            <td>150 000 FCFA</td>
+                            <td><span class="status status-paid">Payée</span></td>
+                            <td><button class="btn-action" title="Télécharger"><i class="fa-solid fa-download"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#INV-0041</td>
+                            <td>Koffi Mensah</td>
+                            <td>Suzuki Swift</td>
+                            <td>80 000 FCFA</td>
+                            <td><span class="status status-pending">En attente</span></td>
+                            <td><button class="btn-action" title="Télécharger"><i class="fa-solid fa-download"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#INV-0040</td>
+                            <td>Marc Blan</td>
+                            <td>Mercedes C-Class</td>
+                            <td>420 000 FCFA</td>
+                            <td><span class="status status-paid">Payée</span></td>
+                            <td><button class="btn-action" title="Télécharger"><i class="fa-solid fa-download"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

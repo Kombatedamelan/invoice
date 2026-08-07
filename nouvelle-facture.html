@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO - Nouvelle Facture</title>
+    <link rel="stylesheet" href="nouvelle-facture.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        Voici le code pour la page Nouvelle Facture (nouvelle-facture.html). Elle respecte à 100% le design moderne bleu nuit et bleu néon de votre tableau de bord, tout en intégrant fidèlement tous les champs de votre exemplaire de facture réelle (AESA, Orabank, chauffeur, etc.).
+Le formulaire est pré-rempli avec votre exemple pour que vous puissiez voir immédiatement le rendu, et il occupe toute la largeur de l'écran.
+## 1. Le Code HTML (nouvelle-facture.html)
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNOUO - Nouvelle Facture</title>
+    <link rel="stylesheet" href="nouvelle-facture.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+
+    <!-- BARRE SUPÉRIEURE (TOP-BAR) -->
+    <header class="top-bar">
+        <div class="brand">
+            <h2>MOUNOUO</h2>
+        </div>
+        <nav class="top-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> Factures</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-plus-circle"></i> Nouvelle facture</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Paramètres</a>
+        </nav>
+        <div class="top-profile">
+            <a href="index.html" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Déconnexion</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+        
+        <section class="content-header">
+            <div class="welcome-text">
+                <h1>Éditer une facture</h1>
+                <p>Remplissez les informations ci-dessous pour générer le document officiel.</p>
+            </div>
+            <a href="dashboard.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+            </a>
+        </section>
+
+        <!-- FORMULAIRE DE FACTURATION DE BOUT EN BOUT -->
+        <form action="#" method="POST" class="invoice-form-full">
+            
+            <!-- SECTION 1 : EN-TÊTE ET ENREGISTREMENT -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-receipt"></i> Informations Document</h3>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="invoice-date">Date d'émission</label>
+                        <input type="text" id="invoice-date" value="Lomé, le 28 avril 2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-number">Facture N°</label>
+                        <input type="text" id="invoice-number" value="017/04/MOU/2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number">N° du bon de commande</label>
+                        <input type="text" id="order-number" value="N°0023- COMMUNICATION /DUE/ATI-AESA" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2 : CLIENT -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Informations du Client</h3>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="client-name">Nom du Client / Raison Sociale</label>
+                        <input type="text" id="client-name" value="Agriconsulting Europe S.A. (AESA)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="client-vat">Numéro de TVA (VAT n°)</label>
+                        <input type="text" id="client-vat" value="BE 0452.263.785">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="client-address">Adresse du Client</label>
+                    <input type="text" id="client-address" value="Avenue de Tervuren 36, 1040 Bruxelles, Belgique" required>
+                </div>
+            </div>
+
+            <!-- SECTION 3 : DÉTAILS DE LA LOCATION -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-car"></i> Prestation & Tarification</h3>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="invoice-object">Objet de la facture</label>
+                    <input type="text" id="invoice-object" value="Location d’une voitures 4X4" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="designation">Désignation complète de la mission</label>
+                    <textarea id="designation" rows="3" required>Location d’une voiture 4X4 avec chauffeur pour la mission captation vidéo et photo de l’action global Gateway de l’Union européenne dans le domaine des énergies renouvelables au Togo le 29 avril 2026</textarea>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="quantity">Nombre de véhicules (Nbre)</label>
+                        <input type="number" id="quantity" value="1" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Durée (en jour)</label>
+                        <input type="number" id="duration" value="1" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-price">Prix Unitaire (PU en FCFA)</label>
+                        <input type="number" id="unit-price" value="80000" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4 : MONTANT EN LETTRES -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-pen-nib"></i> Arrêt de la Facture</h3>
+                <div class="form-group">
+                    <label for="amount-words">Arrêter la présente facture à la somme de :</label>
+                    <input type="text" id="amount-words" value="Quatre-vingt mille (80.000) francs CFA" required>
+                </div>
+            </div>
+
+            <!-- SECTION 5 : COORDONNÉES BANCAIRES AUTOMATIQUES (ORABANK) -->
+            <div class="form-section banking-section">
+                <h3 class="section-title"><i class="fa-solid fa-building-columns"></i> Coordonnées Bancaires (Pré-enregistrées)</h3>
+                <p class="banking-notice">Ces informations ORABANK de MOUNOUO seront incluses en bas du document.</p>
+                <div class="form-grid-4">
+                    <div class="form-group"><label>Banque</label><input type="text" value="ORABANK" disabled></div>
+                    <div class="form-group"><label>Intitulé</label><input type="text" value="MOUNOUO" disabled></div>
+                    <div class="form-group"><label>Code Banque</label><input type="text" value="TG 116" disabled></div>
+                    <div class="form-group"><label>Code Agence</label><input type="text" value="01101" disabled></div>
+                </div>
+                <div class="form-grid-3" style="margin-top: 15px;">
+                    <div class="form-group"><label>Numéro de Compte</label><input type="text" value="084539200201" disabled></div>
+                    <div class="form-group"><label>Clé RIB</label><input type="text" value="34" disabled></div>
+                    <div class="form-group"><label>Code Swift</label><input type="text" value="ORBKTGTG" disabled></div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Code IBAN</label>
+                    <input type="text" value="TG53TG1160110108453920020134" disabled>
+                </div>
+            </div>
+
+            <!-- ACTION BOUTONS EN LARGEUR TOTALE -->
+            <div class="action-bar">
+                <button type="button" class="btn-secondary"><i class="fa-solid fa-eye"></i> Aperçu avant impression</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Enregistrer & Générer le PDF</button>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+</html>
+
+## 2. Le Code CSS (nouvelle-facture.css)
+
+/* Réinitialisation complète */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #0a0f24; /* Fond bleu nuit */
+    color: #fff;
+    min-height: 100vh;
+    width: 100%;
+}
+/* BARRE SUPÉRIEURE (TOP-BAR) - 100% width */
+.top-bar {
+    width: 100%;
+    height: 75px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+.top-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a0aec0;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: #fff;
+    background: rgba(0, 242, 254, 0.1);
+}
+
+.logout-btn {
+    color: #ff4e50;
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 78, 80, 0.1);
+}
+/* ZONE CONTENU PRINCIPAL - 100% width */
+.main-content {
+    width: 100%;
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.content-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.welcome-text h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.welcome-text p {
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+/* LE FORMULAIRE LARGE */
+.invoice-form-full {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-section {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 30px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #00f2fe;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 10px;
+}
+/* CONFIGURATION DES GRILLES SUR TOUTE LA LARGEUR */
+.form-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
+.form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+.form-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    color: #a0aec0;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: #fff;
+    outline: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #00f2fe;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+/* STYLE CHIPS BANCAIRES BLOQUÉS */
+.banking-section input:disabled {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.03);
+    color: #718096;
+    cursor: not-allowed;
+}
+
+.banking-notice {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 15px;
+    margin-top: -10px;
+}
+/* BARRE D'ACTIONS INFERIEURE */
+.action-bar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #0072ff, #00f2fe);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #00f2fe;
+    color: #00f2fe;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 242, 254, 0.1);
+}
+/* RESPONSIVE MOBILE COMPACT */@media (max-width: 900px) {
+    .top-bar { padding: 0 20px; flex-direction: column; height: auto; padding-bottom: 15px; gap: 10px; }
+    .top-menu { gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .content-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .btn-back { width: 100%; justify-content: center; }
+    .form-grid-2, .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; }
+    .action-bar { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <!-- BARRE SUPÉRIEURE (TOP-BAR) -->
+    <header class="top-bar">
+        <div class="brand">
+            <h2>MOUNOUO</h2>
+        </div>
+        <nav class="top-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> Factures</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-plus-circle"></i> Nouvelle facture</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Paramètres</a>
+        </nav>
+        <div class="top-profile">
+            <a href="index.html" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Déconnexion</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+        
+        <section class="content-header">
+            <div class="welcome-text">
+                <h1>Éditer une facture</h1>
+                <p>Remplissez les informations ci-dessous pour générer le document officiel.</p>
+            </div>
+            <a href="dashboard.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+            </a>
+        </section>
+
+        <!-- FORMULAIRE DE FACTURATION DE BOUT EN BOUT -->
+        <form action="#" method="POST" class="invoice-form-full">
+            
+            <!-- SECTION 1 : EN-TÊTE ET ENREGISTREMENT -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-receipt"></i> Informations Document</h3>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="invoice-date">Date d'émission</label>
+                        <input type="text" id="invoice-date" value="Lomé, le 28 avril 2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-number">Facture N°</label>
+                        <input type="text" id="invoice-number" value="017/04/MOU/2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number">N° du bon de commande</label>
+                        <input type="text" id="order-number" value="N°0023- COMMUNICATION /DUE/ATI-AESA" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2 : CLIENT -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Informations du Client</h3>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="client-name">Nom du Client / Raison Sociale</label>
+                        <input type="text" id="client-name" value="Agriconsulting Europe S.A. (AESA)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="client-vat">Numéro de TVA (VAT n°)</label>
+                        <input type="text" id="client-vat" value="BE 0452.263.785">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="client-address">Adresse du Client</label>
+                    <input type="text" id="client-address" value="Avenue de Tervuren 36, 1040 Bruxelles, Belgique" required>
+                </div>
+            </div>
+
+            <!-- SECTION 3 : DÉTAILS DE LA LOCATION -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-car"></i> Prestation & Tarification</h3>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="invoice-object">Objet de la facture</label>
+                    <input type="text" id="invoice-object" value="Location d’une voitures 4X4" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="designation">Désignation complète de la mission</label>
+                    <textarea id="designation" rows="3" required>Location d’une voiture 4X4 avec chauffeur pour la mission captation vidéo et photo de l’action global Gateway de l’Union européenne dans le domaine des énergies renouvelables au Togo le 29 avril 2026</textarea>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="quantity">Nombre de véhicules (Nbre)</label>
+                        <input type="number" id="quantity" value="1" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Durée (en jour)</label>
+                        <input type="number" id="duration" value="1" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-price">Prix Unitaire (PU en FCFA)</label>
+                        <input type="number" id="unit-price" value="80000" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4 : MONTANT EN LETTRES -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-pen-nib"></i> Arrêt de la Facture</h3>
+                <div class="form-group">
+                    <label for="amount-words">Arrêter la présente facture à la somme de :</label>
+                    <input type="text" id="amount-words" value="Quatre-vingt mille (80.000) francs CFA" required>
+                </div>
+            </div>
+
+            <!-- SECTION 5 : COORDONNÉES BANCAIRES AUTOMATIQUES (ORABANK) -->
+            <div class="form-section banking-section">
+                <h3 class="section-title"><i class="fa-solid fa-building-columns"></i> Coordonnées Bancaires (Pré-enregistrées)</h3>
+                <p class="banking-notice">Ces informations ORABANK de MOUNOUO seront incluses en bas du document.</p>
+                <div class="form-grid-4">
+                    <div class="form-group"><label>Banque</label><input type="text" value="ORABANK" disabled></div>
+                    <div class="form-group"><label>Intitulé</label><input type="text" value="MOUNOUO" disabled></div>
+                    <div class="form-group"><label>Code Banque</label><input type="text" value="TG 116" disabled></div>
+                    <div class="form-group"><label>Code Agence</label><input type="text" value="01101" disabled></div>
+                </div>
+                <div class="form-grid-3" style="margin-top: 15px;">
+                    <div class="form-group"><label>Numéro de Compte</label><input type="text" value="084539200201" disabled></div>
+                    <div class="form-group"><label>Clé RIB</label><input type="text" value="34" disabled></div>
+                    <div class="form-group"><label>Code Swift</label><input type="text" value="ORBKTGTG" disabled></div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Code IBAN</label>
+                    <input type="text" value="TG53TG1160110108453920020134" disabled>
+                </div>
+            </div>
+
+            <!-- ACTION BOUTONS EN LARGEUR TOTALE -->
+            <div class="action-bar">
+                <button type="button" class="btn-secondary"><i class="fa-solid fa-eye"></i> Aperçu avant impression</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Enregistrer & Générer le PDF</button>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+</html>
